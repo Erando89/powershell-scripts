@@ -10,6 +10,7 @@ for($i = 0; $i -lt $tracks.Count; $i++)
 {
 	$track = $tracks[$i]
 	Write-Output ($track.name + '//' + $track.start)
+	$durationString  = $null
 	
 	if ($i + 1 -lt $tracks.Count){
 	
