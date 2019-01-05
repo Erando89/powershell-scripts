@@ -26,15 +26,16 @@ for($i = 0; $i -lt $tracks.Count; $i++)
 	if (!$skipTitle) {
 		$realtrackcount++
 	}
-	$out = $json.artist + " - " + ($realtrackcount).ToString("00") + " - " + $track.name+$sourceFileExtension
-	$metaArtist = "" + $json.artist
+	$metaArtist = If ($json.artist) {"" + $json.artist} Else {"" + $track.artist}
+	$out = $metaArtist + " - " + ($realtrackcount).ToString("00") + " - " + $track.name+$sourceFileExtension
 	$metaName = "" + $track.name
+	$metaAlbum = If ($json.album) {"" + $json.album} Else {""}
 	$metaYear = "" + $json.year
 	$metaTrack = "" + ($realtrackcount)
 	if ($durationString -and !$skipTitle) {
-		ffmpeg -y -ss $track.start -i $sourceFile.Name -metadata year=$metaYear -metadata artist=$metaArtist -metadata title=$metaName -metadata track=$metaTrack -c copy -t $durationString $out
+		ffmpeg -y -ss $track.start -i $sourceFile.Name -metadata year=$metaYear -metadata album=$metaAlbum -metadata artist=$metaArtist -metadata title=$metaName -metadata track=$metaTrack -c copy -t $durationString $out
 	} elseif (!$skipTitle) {
-		ffmpeg -y -ss $track.start -i $sourceFile.Name -metadata year=$metaYear -metadata artist=$metaArtist -metadata title=$metaName -metadata track=$metaTrack -c copy $out
+		ffmpeg -y -ss $track.start -i $sourceFile.Name -metadata year=$metaYear -metadata album=$metaAlbum -metadata artist=$metaArtist -metadata title=$metaName -metadata track=$metaTrack -c copy $out
 	}
 
 }
